@@ -34,20 +34,23 @@ class _HomePageState extends State<HomePage> {
   Widget coolButton(String imageName, Function onTap, String toolTipMessage) {
     return Tooltip(
       message: toolTipMessage,
-      child: Material(
-          color: Color(0x55ffffff),
-          shape: CircleBorder(),
-          child: InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Image.asset(
-                imageName,
-                width: 44,
-                height: 44,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(40),
+              child: Material(
+            color: Color(0x55ffffff),
+            shape: CircleBorder(),
+            child: InkWell(
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Image.asset(
+                  imageName,
+                  width: 44,
+                  height: 44,
+                ),
               ),
-            ),
-          )),
+            )),
+      ),
     );
   }
 
