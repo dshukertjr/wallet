@@ -6,11 +6,12 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   ThemeData _buildTheme() {
-    final ThemeData base = ThemeData.light();
+    final ThemeData base = ThemeData.dark();
     return base.copyWith(
       primaryColor: Colors.orange,
       accentColor: Colors.cyan[400],
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Color(0xff0c1d39),
+      // scaffoldBackgroundColor: Colors.white,
     );
   }
 
