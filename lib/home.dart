@@ -11,23 +11,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool unlocked = false;
+  List<int> enteredPassCodes = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Home"),
-      // ),
       body: _body(),
-      // drawer: _drawer(),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.edit),
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => Page1()),
-      //     );
-      //   },
-      // ),
     );
   }
 
@@ -36,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       message: toolTipMessage,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(40),
-              child: Material(
+        child: Material(
             color: Color(0x55ffffff),
             shape: CircleBorder(),
             child: InkWell(
@@ -54,19 +44,114 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget unlockButton(String text) {
+    return Container(
+      color: text == null ? Color(0x00000000) : Color(0x11ffffff),
+      width: MediaQuery.of(context).size.width / 3.5,
+      height: MediaQuery.of(context).size.height / 6,
+      child: text == null
+          ? Container()
+          : InkWell(
+              onTap: () {
+                if (text == "delete") {
+                  enteredPassCodes.removeLast();
+                  setState(() {});
+                } else {
+                  if (enteredPassCodes.length <= 4)
+                    enteredPassCodes.add(int.parse(text));
+                    if(enteredPassCodes.length == 4) unlocked = true;
+                  setState(() {});
+                }
+              },
+              child: Center(
+                child: Text(text),
+              ),
+            ),
+    );
+  }
+
+  Widget _enteredTextDisplay(int index, bool error) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 5,
+      child: Center(
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border(
+            bottom: BorderSide(
+              color: error == true ? Colors.red : Colors.white,
+            ),
+          )),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              enteredPassCodes.length <= index
+                  ? ""
+                  : enteredPassCodes[index].toString(),
+              style: TextStyle(
+                fontSize: 40,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _body() {
+    if (unlocked != true) {
+      return SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  4,
+                  (int index) => _enteredTextDisplay(index, false),
+                ),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Wrap(
+                runSpacing: 1.0,
+                spacing: 1.0,
+                direction: Axis.horizontal,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
+                  unlockButton(("1")),
+                  unlockButton(("2")),
+                  unlockButton(("3")),
+                  unlockButton(("4")),
+                  unlockButton(("5")),
+                  unlockButton(("6")),
+                  unlockButton(("7")),
+                  unlockButton(("8")),
+                  unlockButton(("9")),
+                  unlockButton(null),
+                  unlockButton(("0")),
+                  unlockButton(("delete")),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return Stack(
       children: <Widget>[
         Positioned(
-          width: 500,
-          height: 500,
+          width: 450,
+          height: 450,
           left: -170,
-          top: -70,
+          top: -40,
           child: FlareActor(
-            "assets/Coin.flr",
+            "assets/objectFloat.flr",
             alignment: Alignment.center,
             fit: BoxFit.contain,
-            animation: "float",
+            // animation: "float",
           ),
         ),
         CustomPaint(
@@ -128,35 +213,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ],
-    );
-  }
-
-  Drawer _drawer() {
-    return Drawer(
-      child: Column(
-        children: <Widget>[
-          DrawerHeader(
-            child: Text("User Name"),
-          ),
-          Expanded(
-            child: ListView(
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text("Profile"),
-                ),
-                ListTile(
-                  leading: Icon(Icons.settings),
-                  title: Text("Setting"),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            title: Text("Terms & Conditions"),
-          )
-        ],
-      ),
     );
   }
 }

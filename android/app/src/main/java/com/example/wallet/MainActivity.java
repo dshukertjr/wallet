@@ -1,4 +1,4 @@
-package com.example.startertemplate;
+package com.example.wallet;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
